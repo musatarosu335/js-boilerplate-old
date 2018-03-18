@@ -6,7 +6,7 @@ module.exports = {
   "rules": {
     "linebreak-style": [
       "error",
-      "windows"
+      "unix"
     ],
     "jsx-a11y/anchor-is-valid": [ "error", {
       "components": [ "Link" ],
