@@ -1,9 +1,10 @@
 const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+// const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const publicDir = path.join(__dirname, '/public');
 module.exports = [
   {
+    mode: 'development',
     entry: [
       'babel-polyfill',
       './src/index.jsx',
@@ -14,13 +15,17 @@ module.exports = [
       filename: 'bundle.js',
     },
     module: {
-      loaders: [{
-        exclude: /node_modules/,
-        loader: 'babel-loader',
-        query: {
-          presets: ['react', 'env'],
+      rules: [
+        {
+          test: [/\.js$/, /\.jsx$/],
+          exclude: /node_modules/,
+          use: [
+            {
+              loader: 'babel-loader',
+            },
+          ],
         },
-      }],
+      ],
     },
     resolve: {
       extensions: ['.js', '.jsx'],
@@ -31,6 +36,7 @@ module.exports = [
     },
     devtool: '#inline-source-map',
   },
+  /*
   {
     entry: {
       style: './stylesheets/index.scss',
@@ -56,4 +62,5 @@ module.exports = [
       new ExtractTextPlugin('bundle.css'),
     ],
   },
+  */
 ];
