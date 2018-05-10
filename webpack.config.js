@@ -1,10 +1,12 @@
 const path = require('path');
-// const ExtractTextPlugin = require('extract-text-webpack-plugin');
+// const MODE = 'development';
+// const enableSourceMap = (MODE === 'development');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const publicDir = path.join(__dirname, '/public');
 module.exports = [
   {
-    mode: 'development',
+    // mode: 'development',
     entry: [
       'babel-polyfill',
       './src/index.jsx',
@@ -18,12 +20,18 @@ module.exports = [
       rules: [
         {
           test: [/\.js$/, /\.jsx$/],
-          exclude: /node_modules/,
           use: [
             {
               loader: 'babel-loader',
+              options: {
+                presets: [
+                  ['env', { modules: false }],
+                  'react',
+                ],
+              },
             },
           ],
+          exclude: /node_modules/,
         },
       ],
     },
@@ -34,9 +42,8 @@ module.exports = [
       historyApiFallback: true,
       contentBase: publicDir,
     },
-    devtool: '#inline-source-map',
+    // devtool: '#inline-source-map',
   },
-  /*
   {
     entry: {
       style: './stylesheets/index.scss',
@@ -47,14 +54,12 @@ module.exports = [
       filename: 'bundle.css',
     },
     module: {
-      loaders: [
-        {
-          test: /\.css$/,
-          loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader' }),
-        },
+      rules: [
         {
           test: /\.scss$/,
-          loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader!sass-loader' }),
+          use: ExtractTextPlugin.extract({
+            use: [{ loader: 'css-loader', options: { url: false } }, 'sass-loader'],
+          }),
         },
       ],
     },
@@ -62,5 +67,4 @@ module.exports = [
       new ExtractTextPlugin('bundle.css'),
     ],
   },
-  */
 ];
