@@ -1,12 +1,9 @@
 const path = require('path');
-// const MODE = 'development';
-// const enableSourceMap = (MODE === 'development');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const publicDir = path.join(__dirname, '/public');
-module.exports = [
+module.exports = (env, argv) => ([
   {
-    // mode: 'development',
     entry: [
       'babel-polyfill',
       './src/index.jsx',
@@ -42,7 +39,7 @@ module.exports = [
       historyApiFallback: true,
       contentBase: publicDir,
     },
-    // devtool: '#inline-source-map',
+    devtool: argv.mode === 'development' ? 'inline-source-map' : '',
   },
   {
     entry: {
@@ -67,4 +64,4 @@ module.exports = [
       new ExtractTextPlugin('bundle.css'),
     ],
   },
-];
+]);
